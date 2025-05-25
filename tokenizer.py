@@ -1,5 +1,6 @@
 import re
 import utils
+from tokens import *
 
 
 class UnitTokenizer:
@@ -12,7 +13,9 @@ class UnitTokenizer:
         return tokens
 
     def coarse_tokenize(self, raw):
-        pattern = r'[a-zA-ZμΩ]+|\^?[-+]?\d+|[*\/()]|√'
+        # pattern = r'[a-zA-ZμΩ]+|\^?[-+]?\d+|[*\/()]|√'
+        # pattern = r'\d+\.\d+|\d+|[a-zA-ZμΩ]+|\^|[-+*/()]|√'
+        pattern = r'\d+\.\d+|[-+]?\d+|[a-zA-ZμΩ]+|\^|[*\/()]|√'
         return re.findall(pattern, raw)
 
     def tokenize_with_whitespace(self):
@@ -21,13 +24,19 @@ class UnitTokenizer:
         return utils.flatten(tokens)
 
     def split_prefix_and_unit(self, raw):
+        if utils.is_number(raw):
+            return UnitToken(TokenTypeEnum.Number, raw)
+
         if len(raw) == 1:
-            return ["1", raw]
+            if raw.isalpha():
+                return UnitToken(TokenTypeEnum.Dimension, DimToken("1", raw))
+            else:
+                return UnitToken(TokenTypeEnum.Operator, raw)
 
         prefixes = ["p", "n", "μ", "u", "m", "c", "dk", "da", "d", "h", "k", "M", "G", "T"]
         for prefix in prefixes:
             if raw.startswith(prefix):
-                return [prefix, raw[len(prefix):]]
+                return UnitToken(TokenTypeEnum.Dimension, DimToken(prefix, raw[len(prefix):]))
 
-        return ["0", raw]
+        return UnitToken(TokenTypeEnum.Unknown, raw)
 
