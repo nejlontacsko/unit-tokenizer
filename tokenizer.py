@@ -4,26 +4,16 @@ from tokens import *
 
 
 class UnitTokenizer:
-    def __init__(self, unit_string):
-        self.unit_string = unit_string
+    def __init__(self):
+        self.unit_string = ""
 
-    def tokenize(self):
-        parts = self.tokenize_with_whitespace()
-        tokens = [self.split_prefix_and_unit(part) for part in parts]
-        return tokens
-
-    def coarse_tokenize(self, raw):
-        # pattern = r'[a-zA-ZμΩ]+|\^?[-+]?\d+|[*\/()]|√'
-        # pattern = r'\d+\.\d+|\d+|[a-zA-ZμΩ]+|\^|[-+*/()]|√'
+    @staticmethod
+    def coarse_tokenize(raw):
         pattern = r'\d+\.\d+|[-+]?\d+|[a-zA-ZμΩ]+|\^|[*\/()]|√'
         return re.findall(pattern, raw)
 
-    def tokenize_with_whitespace(self):
-        parts = self.unit_string.split()
-        tokens = [self.coarse_tokenize(part) for part in parts]
-        return utils.flatten(tokens)
-
-    def split_prefix_and_unit(self, raw):
+    @staticmethod
+    def split_prefix_and_unit(raw):
         if utils.is_number(raw):
             return UnitToken(TokenTypeEnum.Number, raw)
 
@@ -40,3 +30,12 @@ class UnitTokenizer:
 
         return UnitToken(TokenTypeEnum.Unknown, raw)
 
+    def tokenize_with_whitespace(self):
+        parts = self.unit_string.split()
+        tokens = [self.coarse_tokenize(part) for part in parts]
+        return utils.flatten(tokens)
+
+    def tokenize(self):
+        parts = self.tokenize_with_whitespace()
+        tokens = [self.split_prefix_and_unit(part) for part in parts]
+        return tokens

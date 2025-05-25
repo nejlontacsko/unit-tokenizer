@@ -1,9 +1,4 @@
-from collections import namedtuple
 from enum import Enum
-
-# DimToken = namedtuple("DimToken", ["prefix", "unit"])
-
-# UnitToken = namedtuple("UnitToken", ["type", "value"])
 
 class DimToken:
     def __init__(self, prefix, unit):
