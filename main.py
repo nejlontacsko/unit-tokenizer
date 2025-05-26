@@ -1,5 +1,6 @@
+from fraction_builder import FractionBuilder
 from tokenizer import UnitTokenizer
-from tokenlist import TokenList
+from token_list import TokenList
 
 
 def print_line():
@@ -41,6 +42,13 @@ if __name__ == '__main__':
         l.do_replacements()
         lists.append(l)
         print(tabs, l)
+
+        fb = FractionBuilder(l)
+        fb.find_denominators()
+        fb.find_nominators()
+
+        print("REMAIN", fb.token_list)
+
 
     """
     print("FRACTIONS:")
