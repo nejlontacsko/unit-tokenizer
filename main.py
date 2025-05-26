@@ -8,7 +8,15 @@ def print_line():
 
 
 if __name__ == '__main__':
-    test_units = ["kW*h", "m^3*kg^-1*s^-2", "km/s/Mpc", "ps/√km"]
+    # test_units = ["kW*h", "m^3*kg^-1*s^-2", "km/s/Mpc", "ps/√km"]
+    # test_units = ["m", "Hgmm", "km/h", "Pa*s", "hPa^-1"]
+
+    # These two could break the tokenizer before the implementation of compound units,
+    #   generating Dim:(c*d) and Dim:(T*orr) tokens respectively
+    # test_units = ["cd", "Torr"]
+
+    # Made up complex units
+    test_units = ["cd/Torr*s^-2*hPa^-1*kg^-1"]
 
     # Sizing the first column
     len_max = 1
