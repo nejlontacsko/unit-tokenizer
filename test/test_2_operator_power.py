@@ -1,6 +1,6 @@
 import unittest
-from tokenizer import UnitTokenizer
-from token_list import TokenList
+from tokens.tokenizer import UnitTokenizer
+from tokens.token_list import TokenList
 
 
 class TestUnitTokenList(unittest.TestCase):

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from tokens import TokenTypeEnum, UnitToken
+from tokens.tokens import UnitToken
 
 
 class Fraction:

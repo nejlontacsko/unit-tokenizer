@@ -1,6 +1,6 @@
 import re
 import utils
-from tokens import *
+from tokens.tokens import *
 
 
 class UnitTokenizer:
