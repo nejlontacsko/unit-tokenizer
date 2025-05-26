@@ -30,7 +30,7 @@ class TokenList:
             if self.tokens[i].value == "/":
                 self.tokens[i].value = "*"
                 self.tokens.insert(i + 2, UnitToken.pow())
-                self.tokens.insert(i + 3, UnitToken(TokenTypeEnum.Number, "-1"))
+                self.tokens.insert(i + 3, UnitToken.neg_one())
                 self.tokens.insert(i + 4, UnitToken.mul())
 
     def replace_sqrt_with_pow(self):
@@ -49,6 +49,8 @@ class TokenList:
 
     # Remove operators at the beginning and end of the list assuming that the duplications where removed before
     def trim_operators(self):
+        if len(self.tokens) == 0:
+            return
         if self.tokens[0].type == TokenTypeEnum.Operator:
             self.tokens.pop(0)
         if self.tokens[-1].type == TokenTypeEnum.Operator:

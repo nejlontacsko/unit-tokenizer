@@ -38,6 +38,10 @@ class UnitToken:
         return UnitToken(TokenTypeEnum.Number, "1")
 
     @staticmethod
+    def neg_one() -> UnitToken:
+        return UnitToken(TokenTypeEnum.Number, "-1")
+
+    @staticmethod
     def pow() -> UnitToken:
         return UnitToken(TokenTypeEnum.Operator, "^")
 
