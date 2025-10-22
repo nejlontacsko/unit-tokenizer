@@ -44,4 +44,4 @@ class Fraction:
             denominator_str += f"{repr(denominator)} "
 
         line_len = max(len(numerator_str), len(denominator_str))
-        return f"/ {numerator_str} \\\n| {"-" * line_len} |\n\\ {denominator_str} /"
+        return f"/ {numerator_str} \\\n| {'-' * line_len} |\n\\ {denominator_str} /"
