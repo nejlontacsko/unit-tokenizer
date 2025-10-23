@@ -8,24 +8,27 @@ def print_line():
 
 
 if __name__ == '__main__':
-    # test_units = ["kW*h", "m^3*kg^-1*s^-2", "km/s/Mpc", "ps/√km"]
-    # test_units = ["m", "Hgmm", "km/h", "Pa*s", "hPa^-1"]
+    test_units = ["kW*h", "m^3*kg^-1*s^-2", "km/s/Mpc", "ps/√km", "m", "Hgmm", "km/h", "Pa*s*hPa*m/cm*dm", "hPa^-1"]
 
     # These two could break the tokenizer before the implementation of compound units,
     #   generating Dim:(c*d) and Dim:(T*orr) tokens respectively
     # test_units = ["cd", "Torr"]
 
     # Made up complex units
-    test_units = ["cd/Torr*s^-2*hPa^-1*kg^-1"]
+    # test_units = ["cd/Torr*s^-2*hPa^-1*kg^-1"]
 
     # Sizing the first column
     len_max = 1
     for unit in test_units:
         len_max = max(len_max, len(unit))
+        if len_max % 4 == 0:
+            len_max = len_max + 2
 
     # Generate the table rows
     lines = []
     tokens_lists = []
+
+    # Extract raw tokens
     for unit in test_units:
         tokenizer = UnitTokenizer()
         tokenizer.unit_string = unit
@@ -42,20 +45,33 @@ if __name__ == '__main__':
         print(line)
 
     print("\nReplacement tokens:")
-    print_line()
     tabs = "\t" * int(len_max/4 + 1)
     lists = []
+    lines.clear()
     for tokens in tokens_lists:
+        # Convert / to ^-1
         l = TokenList(tokens)
         l.do_replacements()
         lists.append(l)
-        print(tabs, l)
+        lines.append("{0}{1}".format(tabs, l))
+    print_line()
+    for line in lines:
+        print(line)
 
+    print("\nGenerated fractions:")
+    print_line()
+    for l in lists:
+        # Separate the + and - powers into two different lists
         fb = FractionBuilder(l)
         fb.find_denominators()
         fb.find_nominators()
+        fb.digest_remaining()
+        frac = fb.build()
+        print(frac, "\n")
 
-        print("REMAIN", fb.token_list)
+        # TODO: Collapse prefixes
+        # TODO: Collapse the same dimensions to one occurace in nom and dem.
+        # TODO: Collapse the same dimensions to one occurence in the whole fraction
 
 
     """

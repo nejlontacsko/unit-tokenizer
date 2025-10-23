@@ -6,6 +6,7 @@ class TokenList:
         self.tokens = tokens
 
     def do_replacements(self):
+        self.replace_single()
         self.replace_div_and_sqrt()
 
         while self.tokens.count(UnitToken.div()) > 0:
@@ -15,6 +16,13 @@ class TokenList:
 
         self.remove_duplicates()
         self.trim_operators()
+
+    def replace_single(self):
+        """Extend the single Dim tokens with the first exponent."""
+        if len(self.tokens) == 1 and self.tokens[0].type == TokenTypeEnum.Dimension:
+            self.tokens.append(UnitToken.pow())
+            self.tokens.append(UnitToken.one())
+            return
 
     def replace_div_and_sqrt(self):
         for i in range(len(self.tokens)):
@@ -41,14 +49,14 @@ class TokenList:
                 self.tokens.insert(i + 5, UnitToken.mul())
                 self.tokens.remove(self.tokens[i])
 
-    # The whole list can have duplications, but operators with the same value should not follow each other
     def remove_duplicates(self):
+        """The whole list can have duplications, but operators with the same value should not follow each other."""
         for i in range(len(self.tokens) - 1, 0, -1):
             if self.tokens[i] == self.tokens[i - 1]:
                 self.tokens.pop(i)
 
-    # Remove operators at the beginning and end of the list assuming that the duplications where removed before
     def trim_operators(self):
+        """Remove operators at the beginning and end of the list assuming that the duplications where removed before."""
         if len(self.tokens) == 0:
             return
         if self.tokens[0].type == TokenTypeEnum.Operator:

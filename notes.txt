@@ -1,0 +1,21 @@
+Feladatok:
+
+1. a REMAIN-ek akoz a tokenek, amiknél nincsen még ott az eőfrodulásának a számlálása
+  azaz Ope:^, Num:1 ezek a kiegészítések
+2. a számlálók és nevezők kivonatolását el is kéne tárolni
+
+-- Idáig kész --
+
+3. a kivonatolt részeknél: le kell venni a tokenekről a prefixumokat és összevonni egybe
+4. utána meg kell számoltatni a dimenzió előfordulását és biztosítani, hogy mind csak egyszer szerepeljen
+5. végül összehasonlítható, hogy a számláló és a nevezőben nincs azonos dimenzió
+
+Majd ha ezek az alap képességek működnek, jó lenne ha tudna a program olyat,
+ hogy előre definiált származtatott mértékegységeket (mint pl Pascal) is lebontani
+ alap mértékegységekre
+ (példa:
+    1. Pa = N/m^2 = N*m^-2 Első rekurzív lebontás
+    2. N = kg * m/s^2 = kg*m*s^-2 Második rekurzív lebontás
+    3. Pa = kg*m*s^-2*m^-2 Behelyettesítéses összefűzés
+    4. Pa = kg*s^-2*m^-1 Azonos dimenziójú tokenek összevonása
+    5. Pa = kg*m^-1*s^-2 Polinom forma érdekében sorba rendezés kitevők szerint.)

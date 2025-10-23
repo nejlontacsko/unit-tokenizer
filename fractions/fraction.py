@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from tokens.token_list import TokenList
 from tokens.tokens import UnitToken
 
 
@@ -10,6 +11,17 @@ class Fraction:
         self.numerators = [numerator]
         self.denominators = [denominator]
 
+    @staticmethod
+    def from_lists(num: TokenList, den: TokenList) -> Fraction:
+        f = Fraction()
+        if len(num.tokens) > 0:
+            f.numerators = num.tokens
+        if len(den.tokens) > 0:
+            f.denominators = den.tokens
+        return f
+
+    # TODO: Need to reconsider. Use Mul or have tuples of dim+exp?
+    """
     def inverse(self) -> Fraction:
         frac = Fraction()
         for numerator in self.numerators:
@@ -34,14 +46,14 @@ class Fraction:
     # Division with another fraction
     def append_inverse_fraction(self, fraction: Fraction):
         self.append_fraction(fraction.inverse())
+    """
 
     def __str__(self):
-        numerator_str = ""
-        denominator_str = ""
-        for numerator in self.numerators:
-            numerator_str += f"{repr(numerator)} "
-        for denominator in self.denominators:
-            denominator_str += f"{repr(denominator)} "
-
+        numerator_str = " ".join(repr(n) for n in self.numerators)
+        denominator_str = " ".join(repr(d) for d in self.denominators)
         line_len = max(len(numerator_str), len(denominator_str))
-        return f"/ {numerator_str} \\\n| {'-' * line_len} |\n\\ {denominator_str} /"
+        return (
+            f"\t/ {numerator_str.center(line_len)} \\\n"
+            f"\t| {'-' * line_len} |\n"
+            f"\t\\ {denominator_str.center(line_len)} /"
+        )

@@ -21,6 +21,20 @@ class ExactMatch(TokenPattern):
         return f"ExactMatch({self.token})"
 
 
+class TypeMatch(TokenPattern):
+    """Type matching with a UnitToken. Uses the __eq__ operator. The value is not taken into account."""
+    def __init__(self, token: UnitToken):
+        self.token = token
+
+    def matches(self, token: Optional[UnitToken]) -> bool:
+        if token is None:
+            return False
+        return token.type == self.token.type
+
+    def __repr__(self):
+        return f"TypeMatch({self.token})"
+
+
 class NegativeMatch(TokenPattern):
     """Recognition of Negative number typed token, even if it is a string or float."""
     def matches(self, token: Optional[UnitToken]) -> bool:

@@ -34,6 +34,10 @@ class UnitToken:
         return False
 
     @staticmethod
+    def dim() -> UnitToken:
+        return UnitToken(TokenTypeEnum.Dimension, "")
+
+    @staticmethod
     def one() -> UnitToken:
         return UnitToken(TokenTypeEnum.Number, "1")
 
