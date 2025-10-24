@@ -1,4 +1,5 @@
 from fractions.fraction_builder import FractionBuilder
+from fractions.fraction_collapser import FractionCollapser
 from tokens.tokenizer import UnitTokenizer
 from tokens.token_list import TokenList
 
@@ -8,14 +9,14 @@ def print_line():
 
 
 if __name__ == '__main__':
-    test_units = ["kW*h", "m^3*kg^-1*s^-2", "km/s/Mpc", "ps/√km", "m", "Hgmm", "km/h", "Pa*s*hPa*m/cm*dm", "hPa^-1"]
+    # test_units = ["kW*h", "m^3*kg^-1*s^-2", "km/s/Mpc", "ps/√km", "m", "Hgmm", "km/h", "Pa*s*hPa*m/cm*dm", "hPa^-1"]
 
     # These two could break the tokenizer before the implementation of compound units,
     #   generating Dim:(c*d) and Dim:(T*orr) tokens respectively
     # test_units = ["cd", "Torr"]
 
     # Made up complex units
-    # test_units = ["cd/Torr*s^-2*hPa^-1*kg^-1"]
+    test_units = ["cd/Torr*s^-2*hPa^-1*kg^-1"]
 
     # Sizing the first column
     len_max = 1
@@ -70,6 +71,11 @@ if __name__ == '__main__':
         print(frac, "\n")
 
         # TODO: Collapse prefixes
+
+        fc = FractionCollapser(frac)
+        fc.collapse_prefixes()
+
+        print(frac, "\n")
         # TODO: Collapse the same dimensions to one occurace in nom and dem.
         # TODO: Collapse the same dimensions to one occurence in the whole fraction
 
